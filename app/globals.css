@@ -1,0 +1,565 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+:root {
+  --background: 255 255 255;
+  --foreground: 17 24 39;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+  --chart-1: 12 76% 61%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  --radius: 0.5rem;
+
+  /* Sidebar tokens */
+  --sidebar-background: 240 5.9% 10%; /* #18181b */
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 6% 20%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 240 6% 18%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  /* Sidebar (dark) */
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 6% 20%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 240 6% 18%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Utility helpers */
+.container {
+  @apply mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* -----------------------------------------------------------------------------
+   Global Overrides
+   Goal: Ubah semua warna kuning menjadi putih (map all yellows to white)
+   This ensures any Tailwind "yellow" and "amber" utilities render as white,
+   plus common arbitrary hex yellows.
+   ---------------------------------------------------------------------------*/
+
+/* Arbitrary hex classes for yellow -> white */
+.text-\[\#ffff00\],
+.text-\[\#ff0\],
+.text-\[\#ffeb3b\],
+.text-\[\#facc15\],
+.text-\[\#fde047\] {
+  color: #ffffff !important;
+}
+.bg-\[\#ffff00\],
+.bg-\[\#ff0\],
+.bg-\[\#ffeb3b\],
+.bg-\[\#facc15\],
+.bg-\[\#fde047\] {
+  background-color: #ffffff !important;
+}
+.border-\[\#ffff00\],
+.border-\[\#ff0\],
+.border-\[\#ffeb3b\],
+.border-\[\#facc15\],
+.border-\[\#fde047\] {
+  border-color: #ffffff !important;
+}
+.fill-\[\#ffff00\],
+.fill-\[\#ff0\],
+.fill-\[\#ffeb3b\],
+.fill-\[\#facc15\],
+.fill-\[\#fde047\] {
+  fill: #ffffff !important;
+}
+.stroke-\[\#ffff00\],
+.stroke-\[\#ff0\],
+.stroke-\[\#ffeb3b\],
+.stroke-\[\#facc15\],
+.stroke-\[\#fde047\] {
+  stroke: #ffffff !important;
+}
+.ring-\[\#ffff00\],
+.ring-\[\#ff0\],
+.ring-\[\#ffeb3b\],
+.ring-\[\#facc15\],
+.ring-\[\#fde047\] {
+  --tw-ring-color: #ffffff !important;
+}
+.caret-\[\#ffff00\],
+.caret-\[\#ff0\],
+.caret-\[\#ffeb3b\],
+.caret-\[\#facc15\],
+.caret-\[\#fde047\] {
+  caret-color: #ffffff !important;
+}
+.outline-\[\#ffff00\],
+.outline-\[\#ff0\],
+.outline-\[\#ffeb3b\],
+.outline-\[\#facc15\],
+.outline-\[\#fde047\] {
+  outline-color: #ffffff !important;
+}
+.accent-\[\#ffff00\],
+.accent-\[\#ff0\],
+.accent-\[\#ffeb3b\],
+.accent-\[\#facc15\],
+.accent-\[\#fde047\] {
+  accent-color: #ffffff !important;
+}
+
+/* Gradients with arbitrary hex (yellow) -> white */
+.from-\[\#ffff00\],
+.from-\[\#ff0\],
+.from-\[\#ffeb3b\],
+.from-\[\#facc15\],
+.from-\[\#fde047\] {
+  --tw-gradient-from: #ffffff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.via-\[\#ffff00\],
+.via-\[\#ff0\],
+.via-\[\#ffeb3b\],
+.via-\[\#facc15\],
+.via-\[\#fde047\] {
+  --tw-gradient-stops: var(--tw-gradient-from), #ffffff var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+.to-\[\#ffff00\],
+.to-\[\#ff0\],
+.to-\[\#ffeb3b\],
+.to-\[\#facc15\],
+.to-\[\#fde047\] {
+  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
+}
+
+/* Tailwind named palettes: yellow and amber -> map to white
+   Shades: 50,100,200,300,400,500,600,700,800,900,950
+   Apply to text, background, border, fill, stroke, ring, caret, outline, accent, and gradients.
+*/
+
+/* Helper macros via manual expansion for clarity and specificity */
+
+/* text-... */
+.text-yellow-50,
+.text-yellow-100,
+.text-yellow-200,
+.text-yellow-300,
+.text-yellow-400,
+.text-yellow-500,
+.text-yellow-600,
+.text-yellow-700,
+.text-yellow-800,
+.text-yellow-900,
+.text-yellow-950,
+.text-amber-50,
+.text-amber-100,
+.text-amber-200,
+.text-amber-300,
+.text-amber-400,
+.text-amber-500,
+.text-amber-600,
+.text-amber-700,
+.text-amber-800,
+.text-amber-900,
+.text-amber-950 {
+  color: #ffffff !important;
+}
+
+/* bg-... */
+.bg-yellow-50,
+.bg-yellow-100,
+.bg-yellow-200,
+.bg-yellow-300,
+.bg-yellow-400,
+.bg-yellow-500,
+.bg-yellow-600,
+.bg-yellow-700,
+.bg-yellow-800,
+.bg-yellow-900,
+.bg-yellow-950,
+.bg-amber-50,
+.bg-amber-100,
+.bg-amber-200,
+.bg-amber-300,
+.bg-amber-400,
+.bg-amber-500,
+.bg-amber-600,
+.bg-amber-700,
+.bg-amber-800,
+.bg-amber-900,
+.bg-amber-950 {
+  background-color: #ffffff !important;
+}
+
+/* border-... */
+.border-yellow-50,
+.border-yellow-100,
+.border-yellow-200,
+.border-yellow-300,
+.border-yellow-400,
+.border-yellow-500,
+.border-yellow-600,
+.border-yellow-700,
+.border-yellow-800,
+.border-yellow-900,
+.border-yellow-950,
+.border-amber-50,
+.border-amber-100,
+.border-amber-200,
+.border-amber-300,
+.border-amber-400,
+.border-amber-500,
+.border-amber-600,
+.border-amber-700,
+.border-amber-800,
+.border-amber-900,
+.border-amber-950 {
+  border-color: #ffffff !important;
+}
+
+/* fill-... */
+.fill-yellow-50,
+.fill-yellow-100,
+.fill-yellow-200,
+.fill-yellow-300,
+.fill-yellow-400,
+.fill-yellow-500,
+.fill-yellow-600,
+.fill-yellow-700,
+.fill-yellow-800,
+.fill-yellow-900,
+.fill-yellow-950,
+.fill-amber-50,
+.fill-amber-100,
+.fill-amber-200,
+.fill-amber-300,
+.fill-amber-400,
+.fill-amber-500,
+.fill-amber-600,
+.fill-amber-700,
+.fill-amber-800,
+.fill-amber-900,
+.fill-amber-950 {
+  fill: #ffffff !important;
+}
+
+/* stroke-... */
+.stroke-yellow-50,
+.stroke-yellow-100,
+.stroke-yellow-200,
+.stroke-yellow-300,
+.stroke-yellow-400,
+.stroke-yellow-500,
+.stroke-yellow-600,
+.stroke-yellow-700,
+.stroke-yellow-800,
+.stroke-yellow-900,
+.stroke-yellow-950,
+.stroke-amber-50,
+.stroke-amber-100,
+.stroke-amber-200,
+.stroke-amber-300,
+.stroke-amber-400,
+.stroke-amber-500,
+.stroke-amber-600,
+.stroke-amber-700,
+.stroke-amber-800,
+.stroke-amber-900,
+.stroke-amber-950 {
+  stroke: #ffffff !important;
+}
+
+/* ring-... */
+.ring-yellow-50,
+.ring-yellow-100,
+.ring-yellow-200,
+.ring-yellow-300,
+.ring-yellow-400,
+.ring-yellow-500,
+.ring-yellow-600,
+.ring-yellow-700,
+.ring-yellow-800,
+.ring-yellow-900,
+.ring-yellow-950,
+.ring-amber-50,
+.ring-amber-100,
+.ring-amber-200,
+.ring-amber-300,
+.ring-amber-400,
+.ring-amber-500,
+.ring-amber-600,
+.ring-amber-700,
+.ring-amber-800,
+.ring-amber-900,
+.ring-amber-950 {
+  --tw-ring-color: #ffffff !important;
+}
+
+/* caret-... */
+.caret-yellow-50,
+.caret-yellow-100,
+.caret-yellow-200,
+.caret-yellow-300,
+.caret-yellow-400,
+.caret-yellow-500,
+.caret-yellow-600,
+.caret-yellow-700,
+.caret-yellow-800,
+.caret-yellow-900,
+.caret-yellow-950,
+.caret-amber-50,
+.caret-amber-100,
+.caret-amber-200,
+.caret-amber-300,
+.caret-amber-400,
+.caret-amber-500,
+.caret-amber-600,
+.caret-amber-700,
+.caret-amber-800,
+.caret-amber-900,
+.caret-amber-950 {
+  caret-color: #ffffff !important;
+}
+
+/* outline-... */
+.outline-yellow-50,
+.outline-yellow-100,
+.outline-yellow-200,
+.outline-yellow-300,
+.outline-yellow-400,
+.outline-yellow-500,
+.outline-yellow-600,
+.outline-yellow-700,
+.outline-yellow-800,
+.outline-yellow-900,
+.outline-yellow-950,
+.outline-amber-50,
+.outline-amber-100,
+.outline-amber-200,
+.outline-amber-300,
+.outline-amber-400,
+.outline-amber-500,
+.outline-amber-600,
+.outline-amber-700,
+.outline-amber-800,
+.outline-amber-900,
+.outline-amber-950 {
+  outline-color: #ffffff !important;
+}
+
+/* accent-... */
+.accent-yellow-50,
+.accent-yellow-100,
+.accent-yellow-200,
+.accent-yellow-300,
+.accent-yellow-400,
+.accent-yellow-500,
+.accent-yellow-600,
+.accent-yellow-700,
+.accent-yellow-800,
+.accent-yellow-900,
+.accent-yellow-950,
+.accent-amber-50,
+.accent-amber-100,
+.accent-amber-200,
+.accent-amber-300,
+.accent-amber-400,
+.accent-amber-500,
+.accent-amber-600,
+.accent-amber-700,
+.accent-amber-800,
+.accent-amber-900,
+.accent-amber-950 {
+  accent-color: #ffffff !important;
+}
+
+/* Gradient utilities (from/via/to for yellow and amber) */
+.from-yellow-50,
+.from-yellow-100,
+.from-yellow-200,
+.from-yellow-300,
+.from-yellow-400,
+.from-yellow-500,
+.from-yellow-600,
+.from-yellow-700,
+.from-yellow-800,
+.from-yellow-900,
+.from-yellow-950,
+.from-amber-50,
+.from-amber-100,
+.from-amber-200,
+.from-amber-300,
+.from-amber-400,
+.from-amber-500,
+.from-amber-600,
+.from-amber-700,
+.from-amber-800,
+.from-amber-900,
+.from-amber-950 {
+  --tw-gradient-from: #ffffff var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.via-yellow-50,
+.via-yellow-100,
+.via-yellow-200,
+.via-yellow-300,
+.via-yellow-400,
+.via-yellow-500,
+.via-yellow-600,
+.via-yellow-700,
+.via-yellow-800,
+.via-yellow-900,
+.via-yellow-950,
+.via-amber-50,
+.via-amber-100,
+.via-amber-200,
+.via-amber-300,
+.via-amber-400,
+.via-amber-500,
+.via-amber-600,
+.via-amber-700,
+.via-amber-800,
+.via-amber-900,
+.via-amber-950 {
+  --tw-gradient-stops: var(--tw-gradient-from), #ffffff var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+.to-yellow-50,
+.to-yellow-100,
+.to-yellow-200,
+.to-yellow-300,
+.to-yellow-400,
+.to-yellow-500,
+.to-yellow-600,
+.to-yellow-700,
+.to-yellow-800,
+.to-yellow-900,
+.to-yellow-950,
+.to-amber-50,
+.to-amber-100,
+.to-amber-200,
+.to-amber-300,
+.to-amber-400,
+.to-amber-500,
+.to-amber-600,
+.to-amber-700,
+.to-amber-800,
+.to-amber-900,
+.to-amber-950 {
+  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
+}
+
+/* Existing override kept: #fafafa -> #18181b */
+.text-\[\#fafafa\] {
+  color: #18181b !important;
+}
+.bg-\[\#fafafa\] {
+  background-color: #18181b !important;
+}
+.border-\[\#fafafa\] {
+  border-color: #18181b !important;
+}
+.fill-\[\#fafafa\] {
+  fill: #18181b !important;
+}
+.stroke-\[\#fafafa\] {
+  stroke: #18181b !important;
+}
+.ring-\[\#fafafa\] {
+  --tw-ring-color: #18181b !important;
+}
+.caret-\[\#fafafa\] {
+  caret-color: #18181b !important;
+}
+.outline-\[\#fafafa\] {
+  outline-color: #18181b !important;
+}
+.from-\[\#fafafa\] {
+  --tw-gradient-from: #18181b var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(24 24 27 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.via-\[\#fafafa\] {
+  --tw-gradient-stops: var(--tw-gradient-from), #18181b var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+.to-\[\#fafafa\] {
+  --tw-gradient-to: #18181b var(--tw-gradient-to-position) !important;
+}
