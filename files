@@ -1,0 +1,135 @@
+// app/globals.css
+:root {
+--sidebar-background: 220 13% 6%;         /* near-black sidebar */
+--sidebar-foreground: 0 0% 98%;
+--sidebar-primary: 220 10% 10%;
+--sidebar-primary-foreground: 0 0% 98%;
+--sidebar-accent: 220 6% 20%;
+--sidebar-accent-foreground: 0 0% 100%;
+--sidebar-border: 220 6% 18%;
+--sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+.dark {
+--sidebar-background: 220 13% 6%;
+--sidebar-foreground: 0 0% 98%;
+--sidebar-primary: 224.3 76.3% 48%;
+--sidebar-primary-foreground: 0 0% 100%;
+--sidebar-accent: 220 6% 20%;
+--sidebar-accent-foreground: 0 0% 100%;
+--sidebar-border: 220 6% 18%;
+--sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+// app/page.tsx
+import React from 'react';
+import Sidebar from './Sidebar';
+import Dashboard from './Dashboard';
+
+const HotelInventorySystem = () => {
+return (
+  <div className="flex min-h-screen bg-[#F6F7F9]">
+    <Sidebar collapsible="offcanvas" side="left" className="bg-[#0F1113]">
+      {/* Sidebar content here */}
+    </Sidebar>
+    <Dashboard />
+  </div>
+);
+};
+
+const Dashboard = () => {
+const items = [];
+const users = [];
+const suppliers = [];
+const transactions = [];
+
+const dashboardStats = [
+  {
+    title: "Model Barang",
+    value: items.length.toString(),
+    color: "bg-gradient-to-br from-emerald-500 to-emerald-600",
+    icon: "Package",
+    link: "items",
+  },
+  {
+    title: "Pengguna",
+    value: users.length.toString(),
+    color: "bg-gradient-to-br from-orange-500 to-orange-600",
+    icon: "Users",
+    link: "users",
+  },
+  {
+    title: "Supplier",
+    value: suppliers.length.toString(),
+    color: "bg-gradient-to-br from-rose-500 to-rose-600",
+    icon: "Truck",
+    link: "suppliers",
+  },
+  {
+    title: "Transaksi Peminjaman",
+    value: transactions.filter((t) => t.type === "borrow").length.toString(),
+    color: "bg-gradient-to-br from-indigo-500 to-indigo-600",
+    icon: "ArrowUpRight",
+    link: "borrowing",
+  },
+];
+
+const transactionStats = [
+  {
+    title: "Total Barang Masuk",
+    value: transactions
+      .filter((t) => t.type === "in")
+      .reduce((s, t) => s + t.quantity, 0)
+      .toString(),
+    color: "bg-gradient-to-br from-blue-600 to-blue-700",
+    link: "items-in",
+  },
+  {
+    title: "Total Barang Keluar",
+    value: transactions
+      .filter((t) => t.type === "out")
+      .reduce((s, t) => s + t.quantity, 0)
+      .toString(),
+    color: "bg-gradient-to-br from-purple-500 to-purple-600",
+    link: "items-out",
+  },
+  {
+    title: "Total Transaksi Barang Masuk",
+    value: transactions.filter((t) => t.type === "in").length.toString(),
+    color: "bg-gradient-to-br from-orange-600 to-orange-700",
+    link: "items-in",
+  },
+  {
+    title: "Total Transaksi Barang Keluar",
+    value: transactions.filter((t) => t.type === "out").length.toString(),
+    color: "bg-gradient-to-br from-indigo-700 to-indigo-800",
+    link: "items-out",
+  },
+];
+
+const loanStats = [
+  {
+    title: "Peminjaman Dikembalikan",
+    value: transactions.filter((t) => t.type === "return").length.toString(),
+    color: "bg-gradient-to-br from-emerald-600 to-emerald-700",
+    link: "borrowing",
+  },
+  {
+    title: "Peminjaman Belum Dikembalikan",
+    value: transactions.filter((t) => t.type === "borrow" && t.status !== "completed").length.toString(),
+    color: "bg-gradient-to-br from-amber-500 to-amber-600",
+    link: "borrowing",
+  },
+];
+
+return (
+  <div>
+    <div className="bg-[#E9D28C] text-white p-4 sm:p-6 rounded-lg shadow-md">
+      {/* Welcome banner content here */}
+    </div>
+    {/* Other dashboard content here */}
+  </div>
+);
+};
+
+export default HotelInventorySystem;
