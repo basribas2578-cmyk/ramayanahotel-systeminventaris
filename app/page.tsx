@@ -2444,3 +2444,53 @@ export default function HotelInventorySystem() {
     </SidebarProvider>
   )
 }
+import { useState } from "react";
+import { updateUserPassword } from "@/app/actions";
+
+export default function TableUser({ users }) {
+  const [loading, setLoading] = useState(false);
+
+  async function handleChangePassword(userId) {
+    const newPassword = prompt("Masukkan password baru untuk user ini:");
+    if (!newPassword) return;
+
+    setLoading(true);
+    const result = await updateUserPassword(userId, newPassword);
+    setLoading(false);
+
+    if (result.success) {
+      alert("Password berhasil diperbarui!");
+    } else {
+      alert("Gagal: " + result.error);
+    }
+  }
+
+  return (
+    <table className="table-auto w-full border">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Email</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((user) => (
+          <tr key={user.id} className="border-b">
+            <td>{user.name}</td>
+            <td>{user.email}</td>
+            <td>
+              <button
+                className="px-2 py-1 bg-blue-500 text-white rounded"
+                onClick={() => handleChangePassword(user.id)}
+                disabled={loading}
+              >
+                {loading ? "Proses..." : "Ubah Password"}
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
