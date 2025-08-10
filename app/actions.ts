@@ -502,3 +502,21 @@ export async function updatePassword(userId: string, newPassword: string) {
 export async function updateUserPassword(userId: string, newPassword: string) {
   ...
 }
+"use server";
+import { supabase } from "./lib/supabaseClient";
+import bcrypt from "bcryptjs";
+
+export async function updateUserPassword(userId: string, newPassword: string) {
+  try {
+    const hashed = await bcrypt.hash(newPassword, 10);
+    const { error } = await supabase
+      .from("users")
+      .update({ password: hashed })
+      .eq("id", userId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
