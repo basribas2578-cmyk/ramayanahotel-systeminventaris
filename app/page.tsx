@@ -1,3 +1,70 @@
+"use client";
+import { useState } from "react";
+import { updatePassword } from "./actions"; // pastikan path sesuai
+
+export default function DataPenggunaPage({ users }) {
+  const [newPassword, setNewPassword] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleUpdatePassword = async (userId) => {
+    if (!newPassword) {
+      alert("Masukkan password baru");
+      return;
+    }
+    const result = await updatePassword(userId, newPassword);
+    if (result.success) {
+      alert("Password berhasil diperbarui");
+      setNewPassword("");
+      setSelectedUser(null);
+    } else {
+      alert("Gagal memperbarui password: " + result.message);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Data Pengguna</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.nama}</td>
+              <td>{user.email}</td>
+              <td>
+                {selectedUser === user.id ? (
+                  <>
+                    <input
+                      type="password"
+                      placeholder="Password baru"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                    <button onClick={() => handleUpdatePassword(user.id)}>
+                      Simpan
+                    </button>
+                    <button onClick={() => setSelectedUser(null)}>Batal</button>
+                  </>
+                ) : (
+                  <button onClick={() => setSelectedUser(user.id)}>
+                    Ubah Password
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 "use client"
 
 import type React from "react"
