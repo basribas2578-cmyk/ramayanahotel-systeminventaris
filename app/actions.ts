@@ -499,3 +499,6 @@ export async function updatePassword(userId: string, newPassword: string) {
     return { success: false, message: err.message };
   }
 }
+export async function updateUserPassword(userId: string, newPassword: string) {
+  ...
+}
