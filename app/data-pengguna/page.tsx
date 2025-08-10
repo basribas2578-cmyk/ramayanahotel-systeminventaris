@@ -1,106 +1,97 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { addOrUpdatePassword } from "../actions"; // pastikan path ini sesuai lokasi actions.ts
+import { updateUserPassword } from "../actions"; // pastikan path sesuai
+import { supabase } from "../lib/supabaseClient"; // sesuaikan path supabase client
 
 export default function DataPenggunaPage() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [passwordModal, setPasswordModal] = useState({ open: false, userId: "", password: "" });
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [newPassword, setNewPassword] = useState("");
 
-  // Ambil daftar user dari API Supabase atau backend-mu
+  // Ambil data user dari Supabase
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const res = await fetch("/api/users"); // buat API route ini untuk ambil data user
-        const data = await res.json();
-        setUsers(data);
-      } catch (err) {
-        console.error("Gagal ambil user:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
+    const fetchUsers = async () => {
+      const { data, error } = await supabase.from("users").select("*");
+      if (error) console.error(error);
+      else setUsers(data || []);
+      setLoading(false);
+    };
     fetchUsers();
   }, []);
 
-  async function handleSavePassword() {
-    if (!passwordModal.password) return alert("Password tidak boleh kosong!");
-    try {
-      await addOrUpdatePassword(passwordModal.userId, passwordModal.password);
-      alert("Password berhasil diperbarui!");
-      setPasswordModal({ open: false, userId: "", password: "" });
-    } catch (err) {
-      console.error(err);
-      alert("Gagal memperbarui password");
+  const handleUpdatePassword = async (userId: string) => {
+    if (!newPassword) {
+      alert("Password baru tidak boleh kosong");
+      return;
     }
-  }
+    const result = await updateUserPassword(userId, newPassword);
+    if (result.success) {
+      alert("Password berhasil diubah!");
+      setSelectedUser(null);
+      setNewPassword("");
+    } else {
+      alert("Gagal mengubah password: " + result.error);
+    }
+  };
 
   if (loading) return <p>Memuat data pengguna...</p>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Data Pengguna</h1>
-      <table border={1} cellPadding={8} cellSpacing={0}>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Data Pengguna</h1>
+      <table className="min-w-full border border-gray-300">
         <thead>
-          <tr>
-            <th>Email</th>
-            <th>Nama</th>
-            <th>Aksi</th>
+          <tr className="bg-gray-200">
+            <th className="border p-2">ID</th>
+            <th className="border p-2">Nama</th>
+            <th className="border p-2">Email</th>
+            <th className="border p-2">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          {users.length > 0 ? (
-            users.map((u) => (
-              <tr key={u.id}>
-                <td>{u.email}</td>
-                <td>{u.name}</td>
-                <td>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td className="border p-2">{user.id}</td>
+              <td className="border p-2">{user.name}</td>
+              <td className="border p-2">{user.email}</td>
+              <td className="border p-2">
+                {selectedUser === user.id ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="password"
+                      placeholder="Password baru"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="border p-1"
+                    />
+                    <button
+                      onClick={() => handleUpdatePassword(user.id)}
+                      className="bg-green-500 text-white px-2 py-1 rounded"
+                    >
+                      Simpan
+                    </button>
+                    <button
+                      onClick={() => setSelectedUser(null)}
+                      className="bg-gray-500 text-white px-2 py-1 rounded"
+                    >
+                      Batal
+                    </button>
+                  </div>
+                ) : (
                   <button
-                    onClick={() =>
-                      setPasswordModal({ open: true, userId: u.id, password: "" })
-                    }
+                    onClick={() => setSelectedUser(user.id)}
+                    className="bg-blue-500 text-white px-2 py-1 rounded"
                   >
                     Ubah Password
                   </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={3}>Tidak ada data pengguna</td>
+                )}
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
-
-      {/* Modal Ubah Password */}
-      {passwordModal.open && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0, left: 0,
-            width: "100%", height: "100%",
-            backgroundColor: "rgba(0,0,0,0.3)",
-            display: "flex", justifyContent: "center", alignItems: "center"
-          }}
-        >
-          <div style={{ background: "#fff", padding: 20, borderRadius: 8, width: 300 }}>
-            <h3>Ubah Password</h3>
-            <input
-              type="password"
-              placeholder="Password baru"
-              value={passwordModal.password}
-              onChange={(e) => setPasswordModal({ ...passwordModal, password: e.target.value })}
-              style={{ width: "100%", marginBottom: 10 }}
-            />
-            <button onClick={handleSavePassword}>Simpan</button>
-            <button onClick={() => setPasswordModal({ open: false, userId: "", password: "" })}>
-              Batal
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
