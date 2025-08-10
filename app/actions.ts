@@ -484,3 +484,18 @@ export async function fetchDepreciations(): Promise<Depreciation[]> {
   if (error || !data) return []
   return data.map(mapDepreciation)
 }
+"use server";
+
+import { supabase } from "@/lib/supabase"; // path sesuai proyekmu
+
+export async function updatePassword(userId: string, newPassword: string) {
+  try {
+    const { error } = await supabase.auth.admin.updateUserById(userId, {
+      password: newPassword,
+    });
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, message: err.message };
+  }
+}
